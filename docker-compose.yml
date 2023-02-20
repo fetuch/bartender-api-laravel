@@ -1,0 +1,28 @@
+# docker-compose.yml
+version: "3.8"
+services:
+  apache:
+    container_name: apache
+    build: ./docker/apache
+    links:
+      - php
+    ports:
+      - "80:80"
+    volumes:
+      - ./logs/apache:/var/log/apache2
+      - ./src/bartender:/usr/local/apache2/htdocs/bartender
+  php:
+    container_name: php
+    build: ./docker/php
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./src/bartender:/usr/local/apache2/htdocs/bartender
+    working_dir: /usr/local/apache2/htdocs/bartender
+  composer:
+    container_name: composer
+    image: composer/composer
+    volumes:
+      - ./src/bartender:/usr/local/apache2/htdocs/bartender
+    working_dir: /usr/local/apache2/htdocs/bartender
+    command: install
