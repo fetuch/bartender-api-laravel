@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Drink;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Spatie\QueryBuilder\QueryBuilder;
+
 
 class DrinksController extends Controller
 {
@@ -12,7 +15,7 @@ class DrinksController extends Controller
      */
     public function index()
     {
-        return response()->json([]);
+        return QueryBuilder::for(Drink::class)->allowedFilters(['name'])->paginate()->appends(request()->query());
     }
 
     /**
