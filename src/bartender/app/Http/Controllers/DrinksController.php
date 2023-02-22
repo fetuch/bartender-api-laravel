@@ -15,7 +15,7 @@ class DrinksController extends Controller
      */
     public function index()
     {
-        return QueryBuilder::for(Drink::class)->allowedFilters(['name'])->paginate()->appends(request()->query());
+        return QueryBuilder::for(Drink::class)->allowedFilters(['name'])->jsonPaginate();
     }
 
     /**
