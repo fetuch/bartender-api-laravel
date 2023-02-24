@@ -14,7 +14,7 @@ class DrinkSeeder extends Seeder
     public function run(): void
     {
         Drink::factory()
-            ->count(20)
+            ->count(38)
             ->create();
     }
 }
