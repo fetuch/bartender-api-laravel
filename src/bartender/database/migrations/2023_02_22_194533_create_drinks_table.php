@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('drinks', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
             $table->foreignId('category_id')
                 ->constrained()
                 ->onUpdate('cascade')
