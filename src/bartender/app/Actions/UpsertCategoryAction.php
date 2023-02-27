@@ -4,7 +4,7 @@ namespace App\Actions;
 use App\DataTransferObjects\CategoryData;
 use App\Models\Category;
 
-class UpdateCategoryAction
+class UpsertCategoryAction
 {
     public function execute(Category $category, CategoryData $categoryData): Category
     {
