@@ -11,7 +11,7 @@ class Category extends Model
     use HasFactory;
     use HasUuid;
 
-    protected $fillable = ["name"];
+    protected $fillable = ["name", "description"];
 
     public function getRouteKeyName(): string
     {
