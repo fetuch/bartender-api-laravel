@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use TiMacDonald\JsonApi\JsonApiResource;
+use TiMacDonald\JsonApi\Link;
 
 class CategoryResource extends JsonApiResource
 {
@@ -12,6 +13,13 @@ class CategoryResource extends JsonApiResource
         return [
             'name' => $this->name,
             'description' => $this->description,
+        ];
+    }
+
+    public function toLinks(Request $request): array
+    {
+        return [
+            Link::self(route('categories.show', ['category' => $this->uuid]))
         ];
     }
 }

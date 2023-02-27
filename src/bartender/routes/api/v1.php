@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DrinksController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*

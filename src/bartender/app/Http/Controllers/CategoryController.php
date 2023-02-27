@@ -8,6 +8,7 @@ use App\Http\Requests\UpsertCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response as HttpResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,6 +17,22 @@ class CategoryController extends Controller
     public function __construct(
         private readonly UpsertCategoryAction $upsertCategory,
     ) {}
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(): AnonymousResourceCollection
+    {
+        return CategoryResource::collection(Category::all());
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Category $category): CategoryResource
+    {
+        return CategoryResource::make($category);
+    }
 
     /**
      * Store a newly created resource in storage.
