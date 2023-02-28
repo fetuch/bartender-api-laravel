@@ -8,6 +8,11 @@ use TiMacDonald\JsonApi\Link;
 
 class CategoryResource extends JsonApiResource
 {
+    public function toId(Request $request): string
+    {
+        return $this->uuid;
+    }
+
     public function toAttributes(Request $request): array
     {
         return [
