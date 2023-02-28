@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use App\Models\Drink;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -33,3 +34,32 @@ it('should return all drinks', function () {
 
     expect($drinks)->toHaveCount(5);
 })->group('drink', 'get-drink');
+
+it('should filter drinks by category name', function () {
+    Drink::factory()->count(4)->create();
+
+    $shot = Category::factory(['name' => 'Shot'])->create();
+
+    $shotDrinks = Drink::factory([
+        'category_id' => $shot,
+    ])->count(2)->create();
+
+    $drinks = getJson(
+        route('drinks.index', [
+            'filter' => [
+                'category.name' => 'shot',
+            ]
+        ]))
+        ->json('data');
+
+    info(route('drinks.index', [
+        'include' => 'category',
+        'filter' => [
+            'category.name' => 'shot',
+        ]
+    ]));
+
+    expect($drinks)->toHaveCount(2);
+    expect($drinks)->each(fn ($drink) => $drink->id->toBeIn($shotDrinks->pluck('uuid')));
+})->group('drink', 'get-drink');
+

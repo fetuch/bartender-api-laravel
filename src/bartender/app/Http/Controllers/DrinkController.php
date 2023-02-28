@@ -19,6 +19,7 @@ class DrinkController extends Controller
         $drinks =  QueryBuilder::for(Drink::class)
             ->defaultSort('name')
             ->allowedIncludes(['category'])
+            ->allowedFilters(['category.name'])
             ->jsonPaginate();
 
         return DrinkResource::collection($drinks);
