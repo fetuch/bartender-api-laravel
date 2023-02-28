@@ -52,13 +52,6 @@ it('should filter drinks by category name', function () {
         ]))
         ->json('data');
 
-    info(route('drinks.index', [
-        'include' => 'category',
-        'filter' => [
-            'category.name' => 'shot',
-        ]
-    ]));
-
     expect($drinks)->toHaveCount(2);
     expect($drinks)->each(fn ($drink) => $drink->id->toBeIn($shotDrinks->pluck('uuid')));
 })->group('drink', 'get-drink');
