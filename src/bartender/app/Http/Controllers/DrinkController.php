@@ -16,12 +16,12 @@ class DrinkController extends Controller
      */
     public function index()
     {
-        return QueryBuilder::for(Drink::class)
+        $drinks =  QueryBuilder::for(Drink::class)
             ->defaultSort('name')
-            ->allowedFilters(['name'])
-            ->allowedFields(['id', 'name', 'instructions', 'category_id', 'category.id', 'category.name'])
             ->allowedIncludes(['category'])
             ->jsonPaginate();
+
+        return DrinkResource::collection($drinks);
     }
 
     /**

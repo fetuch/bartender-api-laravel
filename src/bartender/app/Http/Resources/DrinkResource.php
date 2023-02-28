@@ -21,6 +21,13 @@ class DrinkResource extends JsonApiResource
         ];
     }
 
+    public function toRelationships(Request $request): array
+    {
+        return [
+            'category' => fn () => new CategoryResource($this->category),
+        ];
+    }
+
     public function toLinks(Request $request): array
     {
         return [

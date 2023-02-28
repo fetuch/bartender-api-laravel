@@ -25,3 +25,11 @@ it('should return a drink', function () {
         ->attributes->instructions->toBe('Margarita instructions');
 })->group('drink', 'get-drink');
 
+it('should return all drinks', function () {
+    Drink::factory()->count(5)->create();
+
+    $drinks = getJson(route('drinks.index'))
+        ->json('data');
+
+    expect($drinks)->toHaveCount(5);
+})->group('drink', 'get-drink');
