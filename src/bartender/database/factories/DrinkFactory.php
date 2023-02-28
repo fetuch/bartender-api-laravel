@@ -25,12 +25,10 @@ class DrinkFactory extends Factory
      */
     public function definition(): array
     {
-        $categoriesCount = Category::count();
-
         return [
             'name' => fake()->sentence(3),
             'instructions' => fake()->text(),
-            'category_id' => rand(1, $categoriesCount),
+            'category_id' => Category::factory(),
         ];
     }
 }

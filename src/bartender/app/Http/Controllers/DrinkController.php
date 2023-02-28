@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DrinkResource;
 use App\Models\Drink;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Spatie\QueryBuilder\QueryBuilder;
 
 
-class DrinksController extends Controller
+class DrinkController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,17 +25,17 @@ class DrinksController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display the specified resource.
      */
-    public function store(Request $request): Response
+    public function show(Drink $drink): DrinkResource
     {
-        //
+        return DrinkResource::make($drink);
     }
 
     /**
-     * Display the specified resource.
+     * Store a newly created resource in storage.
      */
-    public function show(string $id): Response
+    public function store(Request $request): Response
     {
         //
     }

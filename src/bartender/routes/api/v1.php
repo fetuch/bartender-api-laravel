@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\DrinksController;
+use App\Http\Controllers\DrinkController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +15,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::apiResource('categories', CategoryController::class)->except('destroy');
-
-Route::apiResource('drinks', DrinksController::class)
-        ->only(['index']);
+Route::apiResource('drinks', DrinkController::class)->except('destroy');
