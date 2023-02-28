@@ -19,4 +19,4 @@ it('should update a category', function (string $name, string $description) {
 ->with([
     ['name' => 'Shake', 'description' => 'Updated Description'],
     ['name' => 'Shot', 'description' => 'Updated Description'],
-]);
+])->group('category', 'update-category');;

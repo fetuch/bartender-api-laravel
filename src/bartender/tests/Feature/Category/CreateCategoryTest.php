@@ -13,7 +13,7 @@ it('should create a category', function () {
     expect($category)
         ->attributes->name->toBe('Shot')
         ->attributes->description->toBe('Awesome drink category');
-});
+})->group('category', 'create-category');
 
 it('should return 422 if name is invalid', function (?string $name) {
     Category::factory([
@@ -28,4 +28,4 @@ it('should return 422 if name is invalid', function (?string $name) {
     '',
     null,
     'Shot'
-]);
+])->group('category', 'create-category');
