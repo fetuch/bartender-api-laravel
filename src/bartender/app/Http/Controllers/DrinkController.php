@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\UpsertDrinkAction;
+use App\DataTransferObjects\DrinkData;
+use App\Http\Requests\UpsertDrinkRequest;
 use App\Http\Resources\DrinkResource;
 use App\Models\Drink;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -11,6 +15,10 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class DrinkController extends Controller
 {
+    public function __construct(
+        private readonly UpsertDrinkAction $upsertDrink,
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -36,9 +44,11 @@ class DrinkController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): Response
+    public function store(UpsertDrinkRequest $request): JsonResponse
     {
-        //
+        return DrinkResource::make($this->upsert($request, new Drink()))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -55,5 +65,12 @@ class DrinkController extends Controller
     public function destroy(string $id): Response
     {
         //
+    }
+
+    private function upsert(UpsertDrinkRequest $request, Drink $drink): Drink
+    {
+        $drinkData = DrinkData::fromRequest($request);
+
+        return $this->upsertDrink->execute($drink, $drinkData);
     }
 }
