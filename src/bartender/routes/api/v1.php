@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DrinkController;
+use App\Http\Controllers\IngredientController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,3 +18,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('categories', CategoryController::class)->except('destroy');
 Route::apiResource('drinks', DrinkController::class);
+Route::apiResource('ingredients', IngredientController::class);
