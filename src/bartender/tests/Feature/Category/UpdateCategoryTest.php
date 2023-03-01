@@ -16,7 +16,7 @@ it('should update a category', function (string $name, string $description) {
         ->name->toBe($name)
         ->description->toBe($description);
 })
-->with([
-    ['name' => 'Shake', 'description' => 'Updated Description'],
-    ['name' => 'Shot', 'description' => 'Updated Description'],
-])->group('category', 'update-category');;
+    ->with([
+        ['name' => 'Shake', 'description' => 'Updated Description'],
+        ['name' => 'Shot', 'description' => 'Updated Description'],
+    ])->group('category', 'update-category');
