@@ -8,7 +8,7 @@ use App\Http\Requests\UpsertDrinkRequest;
 use App\Http\Resources\DrinkResource;
 use App\Models\Drink;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Http\Response;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -17,7 +17,8 @@ class DrinkController extends Controller
 {
     public function __construct(
         private readonly UpsertDrinkAction $upsertDrink,
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.
@@ -54,9 +55,10 @@ class DrinkController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): Response
+    public function update(UpsertDrinkRequest $request, Drink $drink): HttpResponse
     {
-        //
+        $drink = $this->upsert($request, $drink);
+        return response()->noContent();
     }
 
     /**

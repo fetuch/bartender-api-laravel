@@ -7,6 +7,7 @@ use function Pest\Laravel\postJson;
 it('should create a drink', function () {
     $drink = postJson(route('drinks.store'), [
         'categoryId' => Category::factory()->create()->uuid,
+
         'name' => 'Margarita',
         'instructions' => 'Drink instructions',
     ])->json('data');
@@ -49,4 +50,3 @@ it('should return 422 if category is invalid', function (?string $categoryID) {
     null,
     '',
 ])->group('drink', 'create-drink');
-
