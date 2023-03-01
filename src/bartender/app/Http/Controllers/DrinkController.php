@@ -64,9 +64,10 @@ class DrinkController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): Response
+    public function destroy(Drink $drink): HttpResponse
     {
-        //
+        $drink->delete();
+        return response()->noContent();
     }
 
     private function upsert(UpsertDrinkRequest $request, Drink $drink): Drink

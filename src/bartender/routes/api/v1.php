@@ -14,5 +14,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 Route::apiResource('categories', CategoryController::class)->except('destroy');
-Route::apiResource('drinks', DrinkController::class)->except('destroy');
+Route::apiResource('drinks', DrinkController::class);
