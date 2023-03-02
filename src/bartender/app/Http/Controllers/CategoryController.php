@@ -16,7 +16,8 @@ class CategoryController extends Controller
 {
     public function __construct(
         private readonly UpsertCategoryAction $upsertCategory,
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.
@@ -55,7 +56,7 @@ class CategoryController extends Controller
 
     private function upsert(UpsertCategoryRequest $request, Category $category): Category
     {
-        $categoryData = new CategoryData(...$request->validated());
+        $categoryData = new CategoryData(...($request->data['attributes']));
         return $this->upsertCategory->execute($category, $categoryData);
     }
 }

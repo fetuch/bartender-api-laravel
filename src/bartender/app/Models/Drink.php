@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Concerns\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Drink extends Model
 {
@@ -18,7 +19,8 @@ class Drink extends Model
         return 'uuid';
     }
 
-    public function category() {
+    public function category(): BelongsTo
+    {
         return $this->belongsTo(Category::class);
     }
 }

@@ -13,6 +13,8 @@ class Category extends Model
 
     protected $fillable = ["name", "description"];
 
+    public static $resourceType = 'categories';
+
     public function getRouteKeyName(): string
     {
         return 'uuid';

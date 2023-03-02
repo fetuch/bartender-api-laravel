@@ -5,10 +5,17 @@ use App\Models\Category;
 use function Pest\Laravel\postJson;
 
 it('should create a category', function () {
-    $category = postJson(route('categories.store'), [
-        'name' => 'Shot',
-        'description' => 'Awesome drink category',
-    ])->json('data');
+    $data = [
+        'data' => [
+            'type' => Category::$resourceType,
+            'attributes' => [
+                'name' => 'Shot',
+                'description' => 'Awesome drink category',
+            ],
+        ]
+    ];
+
+    $category = postJson(route('categories.store'), $data)->json('data');
 
     expect($category)
         ->attributes->name->toBe('Shot')
@@ -20,10 +27,17 @@ it('should return 422 if name is invalid', function (?string $name) {
         'name' => 'Shot',
     ])->create();
 
-    postJson(route('categories.store'), [
-        'name' => $name,
-        'description' => 'description',
-    ])->assertInvalid(['name']);
+    $data = [
+        'data' => [
+            'type' => Category::$resourceType,
+            'attributes' => [
+                'name' => $name,
+                'description' => 'Awesome drink category',
+            ],
+        ]
+    ];
+
+    postJson(route('categories.store'), $data)->assertInvalid(['data.attributes.name']);
 })->with([
     '',
     null,
