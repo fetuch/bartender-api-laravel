@@ -14,6 +14,8 @@ class Drink extends Model
 
     protected $fillable = ["name", "instructions"];
 
+    public static $resourceType = "drinks";
+
     public function getRouteKeyName(): string
     {
         return 'uuid';
