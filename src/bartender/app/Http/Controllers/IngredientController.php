@@ -56,7 +56,7 @@ class IngredientController extends Controller
 
     private function upsert(UpsertIngredientRequest $request, Ingredient $Ingredient): Ingredient
     {
-        $IngredientData = new IngredientData(...$request->validated());
+        $IngredientData = new IngredientData(...($request->data['attributes']));
         return $this->upsertIngredient->execute($Ingredient, $IngredientData);
     }
 }

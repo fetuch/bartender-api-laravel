@@ -7,10 +7,17 @@ use function Pest\Laravel\putJson;
 it('should update an ingredient', function (string $name, string $description) {
     $ingredient = Ingredient::factory(['name' => 'Gin'])->create();
 
-    putJson(route('ingredients.update', compact('ingredient')), [
-        'name' => $name,
-        'description' => $description,
-    ])->assertNoContent();
+    $data = [
+        'data' => [
+            'type' => Ingredient::$resourceType,
+            'attributes' => [
+                'name' => $name,
+                'description' => $description,
+            ],
+        ]
+    ];
+
+    putJson(route('ingredients.update', compact('ingredient')), $data)->assertNoContent();
 
     expect(Ingredient::find($ingredient->id))
         ->name->toBe($name)

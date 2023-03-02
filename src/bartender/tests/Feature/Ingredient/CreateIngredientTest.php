@@ -1,12 +1,21 @@
 <?php
 
+use App\Models\Ingredient;
+
 use function Pest\Laravel\postJson;
 
 it('should create an ingredient', function () {
-    $ingredient = postJson(route('ingredients.store'), [
-        'name' => 'Gin',
-        'description' => 'Gin description',
-    ])->json('data');
+    $data = [
+        'data' => [
+            'type' => Ingredient::$resourceType,
+            'attributes' => [
+                'name' => 'Gin',
+                'description' => 'Gin description',
+            ],
+        ]
+    ];
+
+    $ingredient = postJson(route('ingredients.store'), $data)->json('data');
 
     expect($ingredient)
         ->attributes->name->toBe('Gin')
@@ -14,9 +23,17 @@ it('should create an ingredient', function () {
 })->group('ingredient', 'create-ingredient');
 
 it('should return 422 if name is invalid', function (?string $name) {
-    postJson(route('ingredients.store'), [
-        'name' => $name,
-    ])->assertInvalid(['name']);
+    $data = [
+        'data' => [
+            'type' => Ingredient::$resourceType,
+            'attributes' => [
+                'name' => $name,
+                'description' => 'Gin description',
+            ],
+        ]
+    ];
+
+    postJson(route('ingredients.store'), $data)->assertInvalid(['data.attributes.name']);
 })->with([
     null,
     '',

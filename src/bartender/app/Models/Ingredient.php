@@ -13,6 +13,8 @@ class Ingredient extends Model
 
     protected $fillable = ["name", "description"];
 
+    public static $resourceType = "ingredients";
+
     public function getRouteKeyName(): string
     {
         return 'uuid';
