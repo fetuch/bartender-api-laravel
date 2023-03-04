@@ -4,7 +4,10 @@ namespace App\Http\Requests;
 
 use App\Models\Category;
 use App\Models\Drink;
+use App\Models\Ingredient;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 
 class UpsertDrinkRequest extends FormRequest
@@ -14,12 +17,22 @@ class UpsertDrinkRequest extends FormRequest
         return Category::where('uuid', $this->data['attributes']['categoryId'])->firstOrFail();
     }
 
+    public function getIngredients(): Collection
+    {
+        if (isset($this->data['relationships']['ingredients']['data'])) {
+            $uuids = Arr::pluck($this->data['relationships']['ingredients']['data'], 'id');
+            return Ingredient::whereIn('uuid', $uuids)->get();
+        }
+
+        return Collection::make([]);
+    }
+
     public function rules()
     {
         return [
             'data' => [
                 'required',
-                'array:type,attributes',
+                'array',
             ],
 
             'data.type' => [
@@ -46,6 +59,32 @@ class UpsertDrinkRequest extends FormRequest
                 'required',
                 'string',
                 'exists:categories,uuid'
+            ],
+
+            'data.relationships' => [
+                'sometimes',
+                'array',
+            ],
+
+            'data.relationships.ingredients' => [
+                'sometimes',
+                'array',
+            ],
+
+            'data.relationships.ingredients.data' => [
+                'array',
+            ],
+
+            'data.relationships.ingredients.data.*.type' => [
+                'required',
+                'string',
+                Rule::in(Ingredient::$resourceType)
+            ],
+
+            'data.relationships.ingredients.data.*.id' => [
+                'required',
+                'string',
+                'exists:ingredients,uuid'
             ],
         ];
     }

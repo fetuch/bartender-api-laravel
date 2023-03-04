@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Actions;
 
 use App\DataTransferObjects\DrinkData;
@@ -12,6 +13,8 @@ class UpsertDrinkAction
         $drink->name = $drinkData->name;
         $drink->instructions = $drinkData->instructions;
         $drink->save();
+
+        $drink->ingredients()->sync($drinkData->ingredients->pluck('id'));
 
         return $drink;
     }
