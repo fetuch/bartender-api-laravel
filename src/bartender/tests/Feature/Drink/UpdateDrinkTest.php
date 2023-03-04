@@ -2,39 +2,61 @@
 
 use App\Models\Category;
 use App\Models\Drink;
+use App\Models\Ingredient;
 use Symfony\Component\HttpFoundation\Response;
 
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\putJson;
 
-it('should update a drink', function () {
-    $category = Category::factory([
-        'name' => 'Shot',
-    ])->create();
+it('should update a drink')
+    ->tap(function () {
+        $ingredients = Ingredient::factory()->count(3)->create();
 
-    $drink = Drink::factory([
-        'name' => 'Test name',
-        'instructions' => 'Test instructions',
-        'category_id' => $category,
-    ])->create();
+        $category = Category::factory([
+            'name' => 'Shot',
+        ])->create();
 
-    $data = [
-        'data' => [
-            'type' => Drink::$resourceType,
-            'attributes' => [
-                'name' => 'Margarita',
-                'instructions' => 'Drink instructions',
-                'categoryId' => $category->uuid,
-            ],
-        ]
-    ];
+        $drink = Drink::factory([
+            'name' => 'Test name',
+            'instructions' => 'Test instructions',
+            'category_id' => $category,
+        ])->create();
 
-    putJson(route('drinks.update', compact('drink')), $data)->assertStatus(Response::HTTP_NO_CONTENT);
+        $data = [
+            'data' => [
+                'type' => Drink::$resourceType,
+                'attributes' => [
+                    'name' => 'Margarita',
+                    'instructions' => 'Drink instructions',
+                    'categoryId' => $category->uuid,
+                ],
+                'relationships' => [
+                    'ingredients' => [
+                        'data' => [
+                            [
+                                'type' => Ingredient::$resourceType,
+                                'id' => $ingredients[1]->uuid,
+                            ],
+                            [
+                                'type' => Ingredient::$resourceType,
+                                'id' => $ingredients[2]->uuid,
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        ];
 
-    $drink = getJson(route('drinks.show', compact('drink')))
-        ->json('data');
+        putJson(route('drinks.update', compact('drink')), $data)->assertStatus(Response::HTTP_NO_CONTENT);
 
-    expect($drink)
-        ->attributes->name->toBe('Margarita')
-        ->attributes->instructions->toBe('Drink instructions');
-})->group('drink', 'update-drink');
+        $drink = getJson(route('drinks.show', compact('drink')))
+            ->json('data');
+
+        expect($drink)
+            ->attributes->name->toBe('Margarita')
+            ->attributes->instructions->toBe('Drink instructions');
+    })
+    ->assertDatabaseMissing('drink_ingredient', ['drink_id' => 1, 'ingredient_id' => 1])
+    ->assertDatabaseHas('drink_ingredient', ['drink_id' => 1, 'ingredient_id' => 2])
+    ->assertDatabaseHas('drink_ingredient', ['drink_id' => 1, 'ingredient_id' => 3])
+    ->group('drink', 'update-drink');
