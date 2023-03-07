@@ -14,7 +14,9 @@ class UpsertDrinkAction
         $drink->instructions = $drinkData->instructions;
         $drink->save();
 
-        $drink->ingredients()->sync($drinkData->ingredients->pluck('id'));
+        info($drinkData->ingredients);
+
+        $drink->ingredients()->sync($drinkData->ingredients);
 
         return $drink;
     }

@@ -29,6 +29,11 @@ it('should create a drink')
                             [
                                 'type' => Ingredient::$resourceType,
                                 'id' => $ingredients[2]->uuid,
+                                'meta' => [
+                                    'pivot' => [
+                                        'measure' => '1/2 oz'
+                                    ]
+                                ]
                             ],
                         ],
                     ],
@@ -44,7 +49,7 @@ it('should create a drink')
     })
     ->assertDatabaseMissing('drink_ingredient', ['drink_id' => 1, 'ingredient_id' => 1])
     ->assertDatabaseHas('drink_ingredient', ['drink_id' => 1, 'ingredient_id' => 2])
-    ->assertDatabaseHas('drink_ingredient', ['drink_id' => 1, 'ingredient_id' => 3])
+    ->assertDatabaseHas('drink_ingredient', ['drink_id' => 1, 'ingredient_id' => 3, 'measure' => '1/2 oz'])
     ->group('drink', 'create-drink');
 
 it('should return 422 if name is invalid', function (?string $name) {

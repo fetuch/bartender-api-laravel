@@ -10,7 +10,7 @@ class DrinkData
 {
     public function __construct(
         public readonly Category $category,
-        public readonly Collection $ingredients,
+        public readonly array $ingredients,
         public readonly string $name,
         public readonly string $instructions
     ) {

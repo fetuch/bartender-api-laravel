@@ -17,31 +17,14 @@ class UpsertDrinkRequest extends FormRequest
         return Category::where('uuid', $this->data['attributes']['categoryId'])->firstOrFail();
     }
 
-    public function getIngredients(): array
+    public function getIngredients(): Collection
     {
-
         if (isset($this->data['relationships']['ingredients']['data'])) {
-            $ingredientsData = Collection::make($this->data['relationships']['ingredients']['data']);
-            $uuids = $ingredientsData->pluck('id');
-            $ingredients = Ingredient::whereIn('uuid', $uuids)->select('id', 'uuid')->get();
-
-            $arr = [];
-            foreach ($ingredients as $ingredient) {
-                $ingredientData = $ingredientsData->first(function ($ingredientData) use ($ingredient) {
-                    return $ingredientData['id'] === $ingredient->uuid;
-                });
-
-                if (isset($ingredientData['meta']['pivot']['measure'])) {
-                    $arr[$ingredient->id] = ['measure' => $ingredientData['meta']['pivot']['measure']];
-                } else {
-                    $arr[] = $ingredient->id;
-                }
-            }
-
-            return $arr;
+            $uuids = Arr::pluck($this->data['relationships']['ingredients']['data'], 'id');
+            return Ingredient::whereIn('uuid', $uuids)->get();
         }
 
-        return [];
+        return Collection::make([]);
     }
 
     public function rules()

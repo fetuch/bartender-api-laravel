@@ -21,6 +21,7 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->string('measure')->nullable();
             $table->timestamps();
         });
     }
